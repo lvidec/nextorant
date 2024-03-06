@@ -1,9 +1,36 @@
-import { Label } from "./generated/client/index.d";
 import { PrismaClient } from "../prisma/generated/client";
+import { hash } from "bcrypt";
 
 const prisma = new PrismaClient();
 
 async function main() {
+  await populatingMeals();
+
+  await populatingUsers();
+}
+
+async function populatingUsers() {
+  console.log("Populating users...");
+
+  const password = await hash("Duje", 12);
+  const user = await prisma.user.upsert({
+    where: { email: "duje@seed.com" },
+    update: {},
+    create: {
+      email: "duje@seed.com",
+      password,
+      meals: {
+        connect: {
+          id: "continentalId",
+        },
+      },
+    },
+  });
+
+  console.log("Meals populated successfully.");
+}
+
+async function populatingMeals() {
   console.log("Populating meals...");
 
   await prisma.meal.upsert({
@@ -52,7 +79,7 @@ async function main() {
                 where: { id: "pizzaId" },
                 create: {
                   id: "pizzaId",
-                  label: "Pizza",
+                  name: "Pizza",
                 },
               },
             },
@@ -63,7 +90,7 @@ async function main() {
                 where: { id: "chickenId" },
                 create: {
                   id: "chickenId",
-                  label: "Chicken",
+                  name: "Chicken",
                 },
               },
             },
@@ -106,7 +133,7 @@ async function main() {
                 where: { id: "breakfastId" },
                 create: {
                   id: "breakfastId",
-                  label: "Breakfast",
+                  name: "Breakfast",
                 },
               },
             },
@@ -149,7 +176,7 @@ async function main() {
                 where: { id: "dinnerId" },
                 create: {
                   id: "dinnerId",
-                  label: "Dinner",
+                  name: "Dinner",
                 },
               },
             },
