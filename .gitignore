@@ -22,7 +22,6 @@
 
 # prisma
 src/prisma/generated
-src/prisma/migrations
 
 # debug
 npm-debug.log*
