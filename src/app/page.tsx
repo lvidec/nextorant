@@ -5,10 +5,22 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { SignInButton } from "@/components/SignInButton";
 import { SignOutButton } from "@/components/SignOutButton";
 
+import { MealSummary } from "@/components/MealSummary";
+import { MealSelectionView } from "@/components/MealSelectionView";
+
 export default async function Home() {
-  const meal = await prisma.meal.findFirst({
-    where: {
-      title: "Lima's favorite pizza",
+  const meals = await prisma.meal.findMany({
+    include: {
+      drinks: {
+        select: {
+          drink: true,
+        },
+      },
+      labels: {
+        select: {
+          label: true,
+        },
+      },
     },
   });
 
@@ -17,12 +29,8 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {meal?.title}
-
-      {labels.map((label) => (
-        <p key={label.id}>{label.name}</p>
-      ))}
+    <main className="flex min-h-screen flex-col items-center justify-between my-12">
+      <MealSelectionView meals={meals} labels={labels} />
 
       <div className="p-10">
         <h1>Hello from the index page, this is a public route</h1>

@@ -4,16 +4,29 @@ import { hash } from "bcrypt";
 const prisma = new PrismaClient();
 
 async function main() {
-  await populatingMeals();
+  await deleteEverything();
 
+  await populatingMeals();
   await populatingUsers();
+
+  // await deleteEverything();
+}
+
+async function deleteEverything() {
+  await prisma.drinkMeal.deleteMany();
+  await prisma.mealLabel.deleteMany();
+  await prisma.drink.deleteMany();
+  await prisma.label.deleteMany();
+  await prisma.meal.deleteMany();
+  await prisma.user.deleteMany();
+  console.log("Deleted everything successfully");
 }
 
 async function populatingUsers() {
   console.log("Populating users...");
 
   const password = await hash("Duje", 12);
-  const user = await prisma.user.upsert({
+  await prisma.user.upsert({
     where: { email: "duje@seed.com" },
     update: {},
     create: {
@@ -42,6 +55,8 @@ async function populatingMeals() {
       id: "limaId",
       title: "Lima's favorite pizza",
       img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1381&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      starter: "Slightly salted salmon with fresh cucumbers",
+      desert: "Ice cream with pumpkin oil",
       price: 10.99,
       drinks: {
         create: [
@@ -53,6 +68,7 @@ async function populatingMeals() {
                   id: "wineId",
                   price: 3.5,
                   title: "Wine",
+                  img: "https://images.unsplash.com/photo-1569153482031-a3cebdedf294?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                 },
               },
             },
@@ -65,6 +81,7 @@ async function populatingMeals() {
                   id: "juiceId",
                   price: 3.5,
                   title: "Juice",
+                  img: "https://images.unsplash.com/photo-1607690506833-498e04ab3ffa?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                 },
               },
             },
@@ -108,6 +125,7 @@ async function populatingMeals() {
       id: "continentalId",
       title: "Continental breakfast",
       img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=1380&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      starter: "All kinds of fruits",
       price: 3.5,
       drinks: {
         create: [
@@ -119,6 +137,7 @@ async function populatingMeals() {
                   id: "juiceId",
                   price: 3.5,
                   title: "Juice",
+                  img: "https://images.unsplash.com/photo-1607690506833-498e04ab3ffa?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 },
               },
             },
@@ -151,6 +170,7 @@ async function populatingMeals() {
       id: "dinnerId",
       title: "Dinner dinner chicken winner",
       img: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?q=80&w=1288&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      starter: "Slightly salted salmon with fresh cucumbers",
       price: 22,
       drinks: {
         create: [
@@ -162,6 +182,7 @@ async function populatingMeals() {
                   id: "coctailId",
                   price: 3.5,
                   title: "Coctail",
+                  img: "https://images.unsplash.com/photo-1512103865222-dcf9531c9961?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                 },
               },
             },
