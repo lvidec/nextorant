@@ -15,30 +15,14 @@ interface MealSelectionViewProps {
 
 export function MealSelectionView({ meals, labels }: MealSelectionViewProps) {
   const [activeLabel, setActiveLabel] = useState("");
-  const [mealsSelected, setMealsSelected] = useState<string[]>([]);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [canSelectMeal, setCanSelectMeal] = useState(false);
 
   const handleLabelSelection = (isActive: boolean, labelId: string) => {
     setActiveLabel(isActive ? labelId : "");
   };
 
-  const handleMealSelection = (
-    canBeAdded: boolean,
-    mealTitle: string,
-    mealPrice: number
-  ) => {
-    setMealsSelected((prev) =>
-      canBeAdded
-        ? [...prev, mealTitle]
-        : prev.filter((item) => item !== mealTitle)
-    );
-    setTotalPrice((prev) => (canBeAdded ? prev + mealPrice : prev - mealPrice));
-  };
-
   return (
-    <div className="flex">
-      <div className="mx-8 my-4 w-full">
+    <div className="flex w-full">
+      <div className="mx-8 my-4 w-full basis-3/5">
         <LabelSelection
           labels={labels}
           handleLabelSelection={handleLabelSelection}
@@ -47,15 +31,9 @@ export function MealSelectionView({ meals, labels }: MealSelectionViewProps) {
         <MealSelection
           meals={meals}
           activeLabelId={activeLabel}
-          canSelectMeal={canSelectMeal}
-          handleMealSelection={handleMealSelection}
         />
       </div>
       <MealSummary
-        selectedMeals={mealsSelected}
-        totalPrice={totalPrice}
-        canSelectMeal={canSelectMeal}
-        setCanSelectMeal={setCanSelectMeal}
       />
     </div>
   );

@@ -1,21 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useMealsStore } from "@/store/mealsStore";
 import { useState } from "react";
 
-interface MealSummaryProps {
-  selectedMeals: string[];
-  totalPrice: number;
-  canSelectMeal: boolean;
-  setCanSelectMeal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export function MealSummary({
-  selectedMeals,
-  totalPrice,
-  canSelectMeal,
-  setCanSelectMeal,
-}: MealSummaryProps) {
+export function MealSummary() {
   const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const selectedMeals = useMealsStore((state) => state.selectedMeals);
+  const totalPrice = useMealsStore((state) => state.totalPrice);
+
+  const numOfSelectedMeals = Object.values(selectedMeals)
+    .map((value) => value.count)
+    .reduce((c1, c2) => {
+      return c1 + c2;
+    }, 0);
 
   return (
     <div className="w-full lg:w-96 bg-gray-100 p-4 rounded-md">
@@ -27,30 +24,33 @@ export function MealSummary({
           <SelectMealButton
             key={idx}
             index={idx}
-            canSelectMeal={canSelectMeal}
-            setCanSelectMeal={setCanSelectMeal}
+            numOfSelectedMeals={numOfSelectedMeals}
           />
         ))}
         <div className="flex justify-end gap-2 my-4">
           <Button
             className="w-12"
-            disabled={numberOfGuests >= 4}
+            disabled={
+              numberOfGuests >= 4 || numberOfGuests !== numOfSelectedMeals
+            }
             onClick={() => setNumberOfGuests((prev) => prev + 1)}
           >
             <span className="text-xl">+</span>
           </Button>
-          <Button
-            className="w-12"
-            disabled={numberOfGuests <= 1}
-            onClick={() => setNumberOfGuests((prev) => prev - 1)}
-          >
-            <span className="text-xl">-</span>
-          </Button>
         </div>
       </div>
       {totalPrice > 0 && (
-        <div className="flex justify-between items-center mt-4">
-          <p className="text-sm">Total for all passengers:</p>
+        <div className="flex flex-col mt-4">
+          <p className="text-sm">Total for:</p>
+          {Object.entries(selectedMeals).map(([key, value]) => (
+            <div key={key}>
+              <p>
+                {key}
+                {value.count > 1 && ` (x${value.count})`}: &nbsp;
+                {value.totalPrice.toFixed(2) + " €"}
+              </p>
+            </div>
+          ))}
           <span className="text-lg font-bold">{totalPrice.toFixed(2)} €</span>
         </div>
       )}
@@ -60,31 +60,40 @@ export function MealSummary({
 
 interface SelectMealButtonProps {
   index: number;
-  canSelectMeal: boolean;
-  setCanSelectMeal: React.Dispatch<React.SetStateAction<boolean>>;
+  numOfSelectedMeals: number;
 }
 
 export function SelectMealButton({
   index,
-  canSelectMeal,
-  setCanSelectMeal,
+  numOfSelectedMeals,
 }: SelectMealButtonProps) {
   const [hasSelectionBegan, setHasSelectionBegan] = useState(false);
+
+  const canSelectMeal = useMealsStore((state) => state.canSelectMeal);
+  const setCanSelectMeal = useMealsStore((state) => state.setCanSelectMeal);
+
+  const isSelectingMeal = hasSelectionBegan && canSelectMeal && numOfSelectedMeals === index;
 
   return (
     <div className="flex justify-between items-center">
       <p className="text-sm">Adult {index + 1}</p>
       <Button
         variant="outline"
+        disabled={hasSelectionBegan}
         className={cn({
-          "bg-amber-500/50 hover:bg-amber-500/30": hasSelectionBegan,
+          "bg-amber-500/50 hover:bg-amber-500/30":
+            isSelectingMeal,
         })}
         onClick={() => {
           setHasSelectionBegan(!hasSelectionBegan);
           setCanSelectMeal(!canSelectMeal);
         }}
       >
-        {hasSelectionBegan ? "Selecting meal..." : "Select meal"}
+        {isSelectingMeal
+          ? "Selecting meal..."
+          : numOfSelectedMeals > index
+          ? "Selected"
+          : "Select"}
       </Button>
     </div>
   );

@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Drink } from "@/prisma/generated/client";
 import { MealDrinks } from "@/lib/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useMealsStore } from "@/store/mealsStore";
 
 interface IDrinkSelectionProps {
   drinks: MealDrinks;
-  canSelectDrink: boolean;
   handleDrinkSelection: (
     isActive: boolean,
     drinkTitle: string,
@@ -19,7 +19,7 @@ interface IDrinkSelectionProps {
 
 export function DrinksSelection({
   drinks,
-  canSelectDrink,
+
   handleDrinkSelection,
 }: IDrinkSelectionProps) {
   return (
@@ -28,7 +28,6 @@ export function DrinksSelection({
         <DrinkComponent
           key={item.drink.id}
           drink={item.drink}
-          canSelectDrink={canSelectDrink}
           handleDrinkSelection={handleDrinkSelection}
         />
       ))}
@@ -38,7 +37,6 @@ export function DrinksSelection({
 
 interface IDrinkProps {
   drink: Drink;
-  canSelectDrink: boolean;
   handleDrinkSelection: (
     isActive: boolean,
     drinkTitle: string,
@@ -46,8 +44,13 @@ interface IDrinkProps {
   ) => void;
 }
 
-export function DrinkComponent({ drink, canSelectDrink, handleDrinkSelection }: IDrinkProps) {
+export function DrinkComponent({ drink, handleDrinkSelection }: IDrinkProps) {
   const [isActive, setIsActive] = useState(false);
+  const canSelectMeal = useMealsStore((state) => state.canSelectMeal);
+
+  useEffect(() => {
+    setIsActive(!canSelectMeal);
+  }, [canSelectMeal])
 
   const handleDrinkSelect = () => {
     const newIsActive = !isActive;
@@ -59,7 +62,7 @@ export function DrinkComponent({ drink, canSelectDrink, handleDrinkSelection }: 
   return (
     <Button
       variant={"ghost"}
-      disabled={!canSelectDrink}
+      disabled={!canSelectMeal}
       key={drink.id}
       className={cn("p-1 w-12 h-16", { "border-2 border-sky-700": isActive })}
       onClick={handleDrinkSelect}

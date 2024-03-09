@@ -2,29 +2,18 @@
 
 import { MealWithAdditionalFields } from "@/lib/types";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HorizontalLine } from "@/components/HorizontalLine";
 import { DrinksSelection } from "@/components/DrinksSelection";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { useMealsStore } from "@/store/mealsStore";
 
 interface IMealSelectionProps {
   meals: MealWithAdditionalFields[];
   activeLabelId: string;
-  canSelectMeal: boolean;
-  handleMealSelection: (
-    isSelectButtonActive: boolean,
-    mealTitle: string,
-    mealPrice: number
-  ) => void;
 }
 
-export function MealSelection({
-  meals,
-  activeLabelId,
-  canSelectMeal,
-  handleMealSelection,
-}: IMealSelectionProps) {
+export function MealSelection({ meals, activeLabelId }: IMealSelectionProps) {
   const filteredMeals = !activeLabelId
     ? meals
     : meals.filter((meal) =>
@@ -35,11 +24,7 @@ export function MealSelection({
     <div className="mx-4">
       {filteredMeals.map((meal) => (
         <React.Fragment key={meal.id}>
-          <MealComponent
-            meal={meal}
-            canSelectMeal={canSelectMeal}
-            handleMealSelection={handleMealSelection}
-          />
+          <MealComponent meal={meal} />
           <HorizontalLine />
         </React.Fragment>
       ))}
@@ -49,22 +34,23 @@ export function MealSelection({
 
 interface IMealProps {
   meal: MealWithAdditionalFields;
-  canSelectMeal: boolean;
-  handleMealSelection: (
-    isSelectButtonActive: boolean,
-    mealTitle: string,
-    mealPrice: number
-  ) => void;
 }
 
-export function MealComponent({
-  meal,
-  canSelectMeal,
-  handleMealSelection,
-}: IMealProps) {
+export function MealComponent({ meal }: IMealProps) {
   const [selectedDrinks, setSelectedDrinks] = useState<string[]>([]);
-  const [totalPrice, setTotalPrice] = useState<number>(meal.price);
+  const [mealPrice, setMealPrice] = useState<number>(meal.price);
   const [isSelectButtonActive, setIsSelectButtonActive] = useState(false);
+
+  const canSelectMeal = useMealsStore((state) => state.canSelectMeal);
+  const setCanSelectMeal = useMealsStore((state) => state.setCanSelectMeal);
+  const handleMealSelection = useMealsStore(
+    (state) => state.handleMealSelection
+  );
+
+  useEffect(() => {
+    setMealPrice(meal.price);
+    setSelectedDrinks([]);
+  }, [canSelectMeal, meal.price])
 
   const uniqueSelectedDrinks = [...new Set(selectedDrinks)];
 
@@ -73,7 +59,7 @@ export function MealComponent({
     drinkTitle: string,
     price: number
   ) => {
-    setTotalPrice((prev) => (isActive ? prev + price : prev - price));
+    setMealPrice((prev) => (isActive ? prev + price : prev - price));
 
     setSelectedDrinks((prev) =>
       isActive
@@ -112,24 +98,24 @@ export function MealComponent({
         <div className="flex justify-between">
           <DrinksSelection
             drinks={meal.drinks}
-            // canSelectDrink={canSelectMeal && isSelectButtonActive}
-            canSelectDrink={canSelectMeal}
             handleDrinkSelection={handleDrinkSelect}
           />
           <div>
-            <p>{totalPrice.toFixed(2)} €</p>
+            <p>{mealPrice.toFixed(2)} €</p>
             <Button
               variant={"outline"}
-              className={cn("px-6 py-3 border-sky-700 text-sky-700", {
-                "bg-sky-700/20 hover:bg-sky-700/30": isSelectButtonActive,
-              })}
+              className="px-6 py-3 border-sky-700 text-sky-700"
               disabled={!canSelectMeal}
               onClick={() => {
+                handleMealSelection(
+                  meal.title,
+                  mealPrice
+                );
+                setCanSelectMeal(false);
                 setIsSelectButtonActive(!isSelectButtonActive);
-                handleMealSelection(!isSelectButtonActive, meal.title, totalPrice);
               }}
             >
-              {isSelectButtonActive ? "Selected" : "Select"}
+              Select
             </Button>
           </div>
         </div>

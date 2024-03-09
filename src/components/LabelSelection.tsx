@@ -12,6 +12,8 @@ interface ILabelSelectionProps {
 
 type LabelWithIsActive = Label & { isActive: boolean };
 
+const labelAll: LabelWithIsActive = {id: '', name: 'All', isActive: true}
+
 export function LabelSelection({
   labels,
   handleLabelSelection,
@@ -22,7 +24,7 @@ export function LabelSelection({
 
   const [labelsWithIsActive, setLabelsWithIsActive] = useState<
     LabelWithIsActive[]
-  >([...allLabels]);
+  >([labelAll, ...allLabels]);
 
   const setFalsyOtherLabels = (labelId: string) => {
     setLabelsWithIsActive(

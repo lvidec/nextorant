@@ -5,31 +5,18 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { SignInButton } from "@/components/SignInButton";
 import { SignOutButton } from "@/components/SignOutButton";
 
-import { MealSummary } from "@/components/MealSummary";
 import { MealSelectionView } from "@/components/MealSelectionView";
+import { getAllLabels, getMealsWithEverything } from "@/lib/dbActions";
 
 export default async function Home() {
-  const meals = await prisma.meal.findMany({
-    include: {
-      drinks: {
-        select: {
-          drink: true,
-        },
-      },
-      labels: {
-        select: {
-          label: true,
-        },
-      },
-    },
-  });
+  const meals = await getMealsWithEverything();
 
-  const labels = await prisma.label.findMany();
+  const labels = await getAllLabels();
 
   const session = await getServerSession(authOptions);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between my-12">
+    <main className="flex min-h-screen flex-col items-center justify-between m-12">
       <MealSelectionView meals={meals} labels={labels} />
 
       <div className="p-10">
