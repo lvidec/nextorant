@@ -1,23 +1,17 @@
 "use client";
 
 import { Label } from "@/prisma/generated/client";
-import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { LabelWithIsActive } from "@/lib/types";
+import { LabelBadge } from "@/components/LabelBadge";
 
 interface ILabelSelectionProps {
   labels: Label[];
-  handleLabelSelection: (isActive: boolean, labelId: string) => void;
 }
 
-type LabelWithIsActive = Label & { isActive: boolean };
+const labelAll: LabelWithIsActive = { id: "", name: "All", isActive: true };
 
-const labelAll: LabelWithIsActive = {id: '', name: 'All', isActive: true}
-
-export function LabelSelection({
-  labels,
-  handleLabelSelection,
-}: ILabelSelectionProps) {
+export function LabelSelection({ labels }: ILabelSelectionProps) {
   const allLabels: LabelWithIsActive[] = labels.map((label) => {
     return { ...label, isActive: false };
   });
@@ -37,48 +31,12 @@ export function LabelSelection({
   return (
     <div className="flex gap-4 flex-wrap mx-4">
       {labelsWithIsActive.map((label) => (
-        <LabelComponent
+        <LabelBadge
           key={label.id}
           label={label}
-          handleLabelSelection={handleLabelSelection}
           setFalsyOtherLabels={setFalsyOtherLabels}
         />
       ))}
     </div>
-  );
-}
-
-interface LabelComponentProps {
-  label: LabelWithIsActive;
-  handleLabelSelection: (isActive: boolean, labelId: string) => void;
-  setFalsyOtherLabels: (labelId: string) => void;
-}
-
-export function LabelComponent({
-  label,
-  handleLabelSelection,
-  setFalsyOtherLabels,
-}: LabelComponentProps) {
-  const [isActive, setIsActive] = useState(false);
-
-  const handleLabelSelect = (labelId: string) => {
-    label.isActive = !label.isActive;
-
-    const newIsActive = !isActive;
-    setIsActive(newIsActive);
-
-    handleLabelSelection(label.isActive, labelId);
-
-    setFalsyOtherLabels(labelId);
-  };
-
-  return (
-    <Badge
-      variant={"outline"}
-      className={cn("py-3 px-5", { "border-2 border-sky-700": label.isActive })}
-      onClick={() => handleLabelSelect(label.id)}
-    >
-      {label.name}
-    </Badge>
   );
 }

@@ -5,7 +5,6 @@ import { HorizontalLine } from "@/components/HorizontalLine";
 import { LabelSelection } from "@/components/LabelSelection";
 import { MealSelection } from "@/components/MealsSelection";
 import { MealWithAdditionalFields } from "@/lib/types";
-import { useState } from "react";
 import { MealSummary } from "@/components/MealSummary";
 
 interface MealSelectionViewProps {
@@ -14,27 +13,14 @@ interface MealSelectionViewProps {
 }
 
 export function MealSelectionView({ meals, labels }: MealSelectionViewProps) {
-  const [activeLabel, setActiveLabel] = useState("");
-
-  const handleLabelSelection = (isActive: boolean, labelId: string) => {
-    setActiveLabel(isActive ? labelId : "");
-  };
-
   return (
     <div className="flex w-full">
       <div className="mx-8 my-4 w-full basis-3/5">
-        <LabelSelection
-          labels={labels}
-          handleLabelSelection={handleLabelSelection}
-        />
+        <LabelSelection labels={labels} />
         <HorizontalLine />
-        <MealSelection
-          meals={meals}
-          activeLabelId={activeLabel}
-        />
+        <MealSelection meals={meals} />
       </div>
-      <MealSummary
-      />
+      <MealSummary />
     </div>
   );
 }

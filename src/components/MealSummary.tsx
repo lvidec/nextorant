@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { useMealsStore } from "@/lib/store/mealsStore";
 import { cn } from "@/lib/utils";
-import { useMealsStore } from "@/store/mealsStore";
 import { useState } from "react";
 
 export function MealSummary() {
