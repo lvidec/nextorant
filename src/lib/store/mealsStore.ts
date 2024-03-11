@@ -1,4 +1,6 @@
+import { Meal } from "@/prisma/generated/client";
 import { create } from "zustand";
+import { MealWithAdditionalFields } from "@/lib/types";
 
 type CountAndPrice = { count: number; totalPrice: number };
 
@@ -8,6 +10,11 @@ interface MealsStore {
   canSelectMeal: boolean;
   setCanSelectMeal: (canSelect: boolean) => void;
   handleMealSelection: (mealTitle: string, mealPrice: number) => void;
+
+  selectedMealInForm: MealWithAdditionalFields | undefined;
+  setSelectedMealInForm: (
+    selectedMeal: MealWithAdditionalFields | undefined
+  ) => void;
 }
 
 export const useMealsStore = create<MealsStore>((set) => ({
@@ -33,9 +40,9 @@ export const useMealsStore = create<MealsStore>((set) => ({
       return state;
     });
   },
+
+  selectedMealInForm: undefined,
+  setSelectedMealInForm: (selectedMeal) => {
+    set(() => ({ selectedMealInForm: selectedMeal }));
+  },
 }));
-
-
-
-
-

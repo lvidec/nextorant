@@ -5,17 +5,15 @@ import { SignInButton } from "@/components/SignInButton";
 import { SignOutButton } from "@/components/SignOutButton";
 
 import { MealSelectionView } from "@/components/MealSelectionView";
-import { getAllLabels, getMealsWithEverything } from "@/lib/dbActions";
+import { getAllLabels, getMealsWithEverything } from "@/lib/prismaActions";
 
 export default async function Home() {
   const meals = await getMealsWithEverything();
-
   const labels = await getAllLabels();
-
   const session = await getServerSession(authOptions);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between m-12">
+    <main>
       <MealSelectionView meals={meals} labels={labels} />
 
       <div className="p-10">

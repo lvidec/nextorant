@@ -34,7 +34,7 @@ async function populatingUsers() {
       password,
       meals: {
         connect: {
-          id: "continentalId",
+          title: "Continental breakfast",
         },
       },
     },
@@ -52,7 +52,6 @@ async function populatingMeals() {
     },
     update: {},
     create: {
-      id: "limaId",
       title: "Lima's favorite pizza",
       img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1381&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       starter: "Slightly salted salmon with fresh cucumbers",
@@ -63,9 +62,8 @@ async function populatingMeals() {
           {
             drink: {
               connectOrCreate: {
-                where: { id: "wineId" },
+                where: { title: "Wine" },
                 create: {
-                  id: "wineId",
                   price: 3.5,
                   title: "Wine",
                   img: "https://images.unsplash.com/photo-1569153482031-a3cebdedf294?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -76,9 +74,8 @@ async function populatingMeals() {
           {
             drink: {
               connectOrCreate: {
-                where: { id: "juiceId" },
+                where: { title: "Juice" },
                 create: {
-                  id: "juiceId",
                   price: 3.5,
                   title: "Juice",
                   img: "https://images.unsplash.com/photo-1607690506833-498e04ab3ffa?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -93,9 +90,8 @@ async function populatingMeals() {
           {
             label: {
               connectOrCreate: {
-                where: { id: "pizzaId" },
+                where: { name: "Pizza" },
                 create: {
-                  id: "pizzaId",
                   name: "Pizza",
                 },
               },
@@ -104,9 +100,8 @@ async function populatingMeals() {
           {
             label: {
               connectOrCreate: {
-                where: { id: "chickenId" },
+                where: { name: "Chicken" },
                 create: {
-                  id: "chickenId",
                   name: "Chicken",
                 },
               },
@@ -122,7 +117,6 @@ async function populatingMeals() {
     },
     update: {},
     create: {
-      id: "continentalId",
       title: "Continental breakfast",
       img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=1380&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       starter: "All kinds of fruits",
@@ -132,12 +126,11 @@ async function populatingMeals() {
           {
             drink: {
               connectOrCreate: {
-                where: { id: "juiceId" },
+                where: { title: "Juice" },
                 create: {
-                  id: "juiceId",
                   price: 3.5,
                   title: "Juice",
-                  img: "https://images.unsplash.com/photo-1607690506833-498e04ab3ffa?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  img: "https://images.unsplash.com/photo-1607690506833-498e04ab3ffa?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                 },
               },
             },
@@ -149,9 +142,8 @@ async function populatingMeals() {
           {
             label: {
               connectOrCreate: {
-                where: { id: "breakfastId" },
+                where: { name: "Breakfast" },
                 create: {
-                  id: "breakfastId",
                   name: "Breakfast",
                 },
               },
@@ -167,7 +159,6 @@ async function populatingMeals() {
     },
     update: {},
     create: {
-      id: "dinnerId",
       title: "Dinner dinner chicken winner",
       img: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?q=80&w=1288&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       starter: "Slightly salted salmon with fresh cucumbers",
@@ -177,9 +168,8 @@ async function populatingMeals() {
           {
             drink: {
               connectOrCreate: {
-                where: { id: "coctailId" },
+                where: { title: "Coctail" },
                 create: {
-                  id: "coctailId",
                   price: 3.5,
                   title: "Coctail",
                   img: "https://images.unsplash.com/photo-1512103865222-dcf9531c9961?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -194,9 +184,8 @@ async function populatingMeals() {
           {
             label: {
               connectOrCreate: {
-                where: { id: "dinnerId" },
+                where: { id: "Dinner" },
                 create: {
-                  id: "dinnerId",
                   name: "Dinner",
                 },
               },
