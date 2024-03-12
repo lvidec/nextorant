@@ -1,5 +1,5 @@
+import { DrinkSelect } from "@/components/selection/DrinkSelect";
 import { MealDrinks } from "@/lib/types";
-import { DrinkSelect } from "@/components/DrinkSelect";
 import React from "react";
 
 interface IDrinkSelectionProps {

@@ -1,10 +1,10 @@
 "use client";
 
-import { DrinksSelection } from "@/components/DrinksSelection";
+import { DrinksSelection } from "@/components/selection/DrinksSelection";
 import { Button } from "@/components/ui/button";
 import { useMealsStore } from "@/lib/store/mealsStore";
 import { MealWithAdditionalFields } from "@/lib/types";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IMealProps {
   meal: MealWithAdditionalFields;

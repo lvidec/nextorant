@@ -1,10 +1,10 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
-import { z } from "zod";
-import bcrypt from 'bcrypt';
+import { prisma } from "@/lib/prisma/prisma";
 import { User } from "@/prisma/generated/client";
+import bcrypt from 'bcrypt';
 import { redirect } from "next/navigation";
+import { z } from "zod";
 
 const signUpSchema = z.object({
   email: z.string().email(),

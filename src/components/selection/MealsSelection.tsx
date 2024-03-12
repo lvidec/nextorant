@@ -2,10 +2,10 @@
 
 import { HorizontalLine } from "@/components/HorizontalLine";
 import { MealComponent } from "@/components/MealComponent";
+import { MealSelect } from "@/components/selection/MealSelect";
 import { useLabelsStore } from "@/lib/store/labelsStore";
 import { MealWithAdditionalFields } from "@/lib/types";
 import React from "react";
-import { MealSelect } from "@/components/MealSelect";
 
 interface IMealSelectionProps {
   meals: MealWithAdditionalFields[];

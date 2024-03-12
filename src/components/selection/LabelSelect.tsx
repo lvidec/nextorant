@@ -6,15 +6,15 @@ import { LabelWithIsActive } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
-interface ILabelBadgeProps {
+interface ILabelSelectProps {
   label: LabelWithIsActive;
   setFalsyOtherLabels: (labelId: string) => void;
 }
 
-export function LabelBadge({
+export function LabelSelect({
   label,
   setFalsyOtherLabels,
-}: ILabelBadgeProps) {
+}: ILabelSelectProps) {
   const [isActive, setIsActive] = useState(false);
 
   const handleLabelSelection = useLabelsStore(

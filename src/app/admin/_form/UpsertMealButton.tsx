@@ -1,6 +1,6 @@
 "use client";
 
-import { createMealAction, updateMealAction } from "@/app/actions/mealActions";
+import { createMealAction, updateMealAction } from "@/actions/mealActions";
 import { Button } from "@/components/ui/button";
 import { useMealsStore } from "@/lib/store/mealsStore";
 import { useFormStatus } from "react-dom";

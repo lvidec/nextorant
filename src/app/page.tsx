@@ -1,13 +1,13 @@
 import { getServerSession } from "next-auth";
 
-import { SignInButton } from "@/components/SignInButton";
-import { SignOutButton } from "@/components/SignOutButton";
+import { SignInButton } from "@/components/auth/SignInButton";
+import { SignOutButton } from "@/components/auth/SignOutButton";
 
 import { MealSelectionView } from "@/components/MealSelectionView";
-import { getAllLabels, getMealsWithEverything } from "@/lib/prismaActions";
-import { authOptions } from "@/lib/authOptions";
-import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import { authOptions } from "@/lib/auth/authOptions";
+import { getAllLabels, getMealsWithEverything } from "@/lib/prisma/prismaActions";
+import Link from "next/link";
 
 export default async function Home() {
   const meals = await getMealsWithEverything();

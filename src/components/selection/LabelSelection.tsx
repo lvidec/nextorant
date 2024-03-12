@@ -1,9 +1,9 @@
 "use client";
 
+import { LabelSelect } from "@/components/selection/LabelSelect";
+import { LabelWithIsActive } from "@/lib/types";
 import { Label } from "@/prisma/generated/client";
 import { useState } from "react";
-import { LabelWithIsActive } from "@/lib/types";
-import { LabelBadge } from "@/components/LabelBadge";
 
 interface ILabelSelectionProps {
   labels: Label[];
@@ -31,7 +31,7 @@ export function LabelSelection({ labels }: ILabelSelectionProps) {
   return (
     <div className="flex gap-4 flex-wrap mx-4">
       {labelsWithIsActive.map((label) => (
-        <LabelBadge
+        <LabelSelect
           key={label.id}
           label={label}
           setFalsyOtherLabels={setFalsyOtherLabels}

@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteMealAction } from "@/app/actions/mealActions";
+import { deleteMealAction } from "@/actions/mealActions";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useMealsStore } from "@/lib/store/mealsStore";
