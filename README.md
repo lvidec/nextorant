@@ -1,4 +1,15 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+### Nextorant
+
+```bash
+git clone https://github.com/Leonardo-Videc/nextorant.git
+# clone the repository
+
+cd nextorant
+# go into a directory where the project is located
+
+npm ci
+# clean install all the neccessary dependencies
+```
 
 ## Getting Started
 
