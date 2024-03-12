@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma/prisma";
 import { MealWithAdditionalFields } from "@/lib/types";
 import { Drink, Label } from "@/prisma/generated/client";
 
