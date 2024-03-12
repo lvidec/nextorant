@@ -1,5 +1,12 @@
 ### Nextorant
 
+You can login as a test user (if this isn't working, create yourself a new one):
+
+```bash
+username: duje@seed.com
+password: Duje
+```
+
 ```bash
 git clone https://github.com/Leonardo-Videc/nextorant.git
 # clone the repository
