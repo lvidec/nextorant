@@ -36,6 +36,12 @@ export default async function Home() {
         ) : (
           <div className="flex flex-col gap-2 text-2xl font-semibold">
             <h1>Please log in to see special features</h1>
+            <Link
+              className={buttonVariants({ variant: "secondary" })}
+              href={"/sign-up"}
+            >
+              Create a new account
+            </Link>
             <SignInButton />
           </div>
         )}
