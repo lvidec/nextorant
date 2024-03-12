@@ -6,7 +6,10 @@ import { SignOutButton } from "@/components/auth/SignOutButton";
 import { MealSelectionView } from "@/components/MealSelectionView";
 import { buttonVariants } from "@/components/ui/button";
 import { authOptions } from "@/lib/auth/authOptions";
-import { getAllLabels, getMealsWithEverything } from "@/lib/prisma/prismaActions";
+import {
+  getAllLabels,
+  getMealsWithEverything,
+} from "@/lib/prisma/prismaActions";
 import Link from "next/link";
 
 export default async function Home() {
@@ -16,8 +19,6 @@ export default async function Home() {
 
   return (
     <main>
-      <MealSelectionView meals={meals} labels={labels} />
-
       <div className="p-10">
         <h1>This is a public route</h1>
         {session ? (
@@ -39,6 +40,7 @@ export default async function Home() {
           </div>
         )}
       </div>
+      <MealSelectionView meals={meals} labels={labels} />
     </main>
   );
 }

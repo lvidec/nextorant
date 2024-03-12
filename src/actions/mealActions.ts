@@ -5,79 +5,122 @@ import {
   DrinkDataTypeWhenConnecting,
   LabelDataTypeWhenConnecting,
 } from "@/lib/types";
+import { getErrorMessage } from "@/lib/utils";
+import {
+  drinkDataSchema,
+  labelDataSchema,
+  mealDataSchema,
+} from "@/lib/zodSchemas";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 export const createMealAction = async (formData: FormData) => {
-  const labelData = getLabelDataForConnecting(formData);
-  const drinkData = await getDrinkDataForConnecting(formData);
+  try {
+    const [validatedFormData, validatedLabelData, validatedDrinkData] =
+      await getValidatedFormData(formData);
 
-  await prisma.meal.create({
-    data: {
-      title: formData.get("title") as string,
-      starter: formData.get("starter") as string,
-      desert: formData.get("desert") as string,
-      price: Number(formData.get("price")),
-      img: formData.get("image") as string,
-      labels: {
-        create: labelData,
+    await prisma.meal.create({
+      data: {
+        title: validatedFormData.title,
+        starter: validatedFormData.starter,
+        desert: validatedFormData.desert,
+        price: validatedFormData.price,
+        img: validatedFormData.img,
+        labels: {
+          create: validatedLabelData,
+        },
+        drinks: {
+          create: validatedDrinkData,
+        },
       },
-      drinks: {
-        create: drinkData,
-      },
-    },
-  });
+    });
+  } catch (e) {
+    return { error: getErrorMessage(e) };
+  }
 
   revalidatePath("/admin");
 };
 
 export const updateMealAction = async (formData: FormData, mealId: string) => {
-  const labelData = getLabelDataForConnecting(formData);
-  const drinksToAdd = await getDrinkDataForConnecting(formData, mealId);
+  try {
+    const labelData = getLabelDataForConnecting(formData);
+    const drinksToAdd = await getDrinkDataForConnecting(formData, mealId);
 
-  const existingLabelsFromMeal = await prisma.label.findMany({
-    where: {
-      meals: {
-        some: {
-          mealId: mealId,
+    const existingLabelsFromMeal = await prisma.label.findMany({
+      where: {
+        meals: {
+          some: {
+            mealId: mealId,
+          },
         },
       },
-    },
-  });
+    });
 
-  const labelsToAdd = labelData.slice(existingLabelsFromMeal.length);
+    const labelsToAdd = labelData.slice(existingLabelsFromMeal.length);
 
-  await prisma.meal.update({
-    where: {
-      id: mealId,
-    },
-    data: {
-      title: formData.get("title") as string,
-      starter: formData.get("starter") as string,
-      desert: formData.get("desert") as string,
-      price: Number(formData.get("price")),
-      img: formData.get("image") as string,
-      labels: {
-        create: labelsToAdd,
+    const [validatedFormData, validatedLabelData, validatedDrinkData] =
+      await getValidatedFormData(formData, labelsToAdd);
+
+    await prisma.meal.update({
+      where: {
+        id: mealId,
       },
-      drinks: {
-        create: drinksToAdd,
+      data: {
+        title: validatedFormData.title,
+        starter: validatedFormData.starter,
+        desert: validatedFormData.desert,
+        price: validatedFormData.price,
+        img: validatedFormData.img,
+        labels: {
+          create: validatedLabelData,
+        },
+        drinks: {
+          create: validatedDrinkData,
+        },
       },
-    },
-  });
+    });
+  } catch (e) {
+    return { error: getErrorMessage(e) };
+  }
 
   revalidatePath("/admin");
 };
 
 export const deleteMealAction = async (formData: FormData, mealId: string) => {
-  await deleteAllConnectedLabelsAndDrinks(mealId);
+  try {
+    await deleteAllConnectedLabelsAndDrinks(mealId);
 
-  await prisma.meal.delete({
-    where: {
-      id: mealId,
-    },
-  });
+    await prisma.meal.delete({
+      where: {
+        id: mealId,
+      },
+    });
+  } catch (e) {
+    return { error: getErrorMessage(e) };
+  }
 
   revalidatePath("/admin");
+};
+
+export const getValidatedFormData = async (
+  formData: FormData,
+  customLabels?: LabelDataTypeWhenConnecting[]
+) => {
+  const labelData = customLabels ?? getLabelDataForConnecting(formData);
+  const drinkData = await getDrinkDataForConnecting(formData);
+
+  const validatedFormData = mealDataSchema.parse({
+    title: formData.get("title") as string,
+    starter: formData.get("starter") as string,
+    desert: formData.get("desert") as string,
+    price: Number(formData.get("price")),
+    img: formData.get("image") as string,
+  });
+
+  const validatedLabelData = labelDataSchema.parse(labelData);
+  const validatedDrinkData = drinkDataSchema.parse(drinkData);
+
+  return [validatedFormData, validatedLabelData, validatedDrinkData] as const;
 };
 
 const getLabelDataForConnecting = (

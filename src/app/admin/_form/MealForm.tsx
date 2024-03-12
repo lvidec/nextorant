@@ -15,6 +15,9 @@ export function MealForm() {
   const [isNewMeal, setIsNewMeal] = useState(false);
 
   const selectedMealInForm = useMealsStore((state) => state.selectedMealInForm);
+  const setSelectedMealInForm = useMealsStore(
+    (state) => state.setSelectedMealInForm
+  );
 
   const handleClickingNewMeal = () => {
     setIsNewMeal(!isNewMeal);
@@ -32,16 +35,26 @@ export function MealForm() {
       {isNewMeal || selectedMealInForm ? (
         <Card>
           <CardHeader>
-            <CardTitle>
+            <CardTitle className="flex justify-between">
               {selectedMealInForm
                 ? `Update meal - ${selectedMealInForm.title}`
                 : "Create a new meal"}
+              <Button
+                variant={"outline"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSelectedMealInForm(undefined);
+                  setIsNewMeal(false);
+                }}
+              >
+                Reset form
+              </Button>
             </CardTitle>
           </CardHeader>
           <CardContent className="p-2">
             <form>
               <div className="flex gap-4 flex-col">
-                <div key={selectedMealInForm?.title}>
+                <div>
                   <Label htmlFor="new-meal-title">Title</Label>
                   <Input
                     id="new-meal-title"
@@ -50,7 +63,7 @@ export function MealForm() {
                     defaultValue={selectedMealInForm?.title}
                   />
                 </div>
-                <div key={selectedMealInForm?.starter}>
+                <div>
                   <Label htmlFor="new-meal-starter">Starter</Label>
                   <Input
                     id="new-meal-starter"
@@ -59,7 +72,7 @@ export function MealForm() {
                     defaultValue={selectedMealInForm?.starter ?? ""}
                   />
                 </div>
-                <div key={selectedMealInForm?.desert}>
+                <div>
                   <Label htmlFor="new-meal-desert">Desert</Label>
                   <Input
                     id="new-meal-desert"
@@ -68,7 +81,7 @@ export function MealForm() {
                     defaultValue={selectedMealInForm?.desert ?? ""}
                   />
                 </div>
-                <div key={selectedMealInForm?.price}>
+                <div>
                   <Label htmlFor="new-meal-price">Price</Label>
                   <Input
                     id="new-meal-price"
@@ -79,7 +92,7 @@ export function MealForm() {
                     defaultValue={selectedMealInForm?.price}
                   />
                 </div>
-                <div key={selectedMealInForm?.img}>
+                <div>
                   <Label htmlFor="new-meal-img">Image URL</Label>
                   <Input
                     id="new-meal-img"

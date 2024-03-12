@@ -2,6 +2,7 @@
 
 import { createMealAction, updateMealAction } from "@/actions/mealActions";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 import { useMealsStore } from "@/lib/store/mealsStore";
 import { useFormStatus } from "react-dom";
 
@@ -16,6 +17,7 @@ type UpsertMealButtonProps =
     };
 
 export function UpsertMealButton(props: UpsertMealButtonProps) {
+  const { toast } = useToast();
   const { pending } = useFormStatus();
   const setSelectedMealInForm = useMealsStore(
     (state) => state.setSelectedMealInForm
@@ -32,9 +34,22 @@ export function UpsertMealButton(props: UpsertMealButtonProps) {
           if (props.actionType === "create") {
             props.handleCreatingMeal();
 
-            await createMealAction(formData);
+            const response = await createMealAction(formData);
+            if (response?.error) {
+              toast({
+                title: response?.error,
+                variant: "destructive",
+              });
+            }
           } else {
-            await updateMealAction(formData, props.mealId);
+            const response = await updateMealAction(formData, props.mealId);
+            if (response?.error) {
+              toast({
+                title: response?.error,
+                variant: "destructive",
+              });
+            }
+
             setSelectedMealInForm(undefined);
           }
         }}

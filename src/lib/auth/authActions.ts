@@ -2,16 +2,10 @@
 
 import { prisma } from "@/lib/prisma/prisma";
 import { User } from "@/prisma/generated/client";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
-import { z } from "zod";
+import { signUpSchema } from "@/lib/zodSchemas";
 
-const signUpSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8).max(255),
-});
-
-// Interface for the sign-up form state
 interface SignUpFormState {
   errors: {
     email?: string[];
@@ -20,11 +14,13 @@ interface SignUpFormState {
   };
 }
 
-
-export async function signUp(formState: SignUpFormState, formData: FormData): Promise<SignUpFormState> {
+export async function signUp(
+  formState: SignUpFormState,
+  formData: FormData
+): Promise<SignUpFormState> {
   const result = signUpSchema.safeParse({
-    email: formData.get('email'),
-    password: formData.get('password'),
+    email: formData.get("email"),
+    password: formData.get("password"),
   });
 
   if (!result.success) {
@@ -38,7 +34,7 @@ export async function signUp(formState: SignUpFormState, formData: FormData): Pr
   if (isEmailExists) {
     return {
       errors: {
-        email: ['Email already exists'],
+        email: ["Email already exists"],
       },
     };
   }
@@ -63,15 +59,14 @@ export async function signUp(formState: SignUpFormState, formData: FormData): Pr
     } else {
       return {
         errors: {
-          _form: ['Something went wrong'],
+          _form: ["Something went wrong"],
         },
       };
     }
   }
 
-  redirect('/');
+  redirect("/");
 }
-
 
 export const findUserByEmail = async (email: string) => {
   return await prisma.user.findFirst({
