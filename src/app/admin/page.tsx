@@ -1,5 +1,6 @@
 import { MealForm } from "@/app/admin/_form/MealForm";
 import { MealTableRow } from "@/app/admin/MealTableRow";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getMealsWithEverything } from "@/lib/prismaActions";
+import Link from "next/link";
 
 export default async function MealAdmin() {
   const meals = await getMealsWithEverything();
@@ -18,6 +20,9 @@ export default async function MealAdmin() {
       <CardHeader>
         <CardTitle>Meals</CardTitle>
         <CardDescription>Manage your restaurant&apos;s menu</CardDescription>
+        <Link href={"/"} className={buttonVariants({ variant: "secondary" })}>
+          Go back to main route
+        </Link>
       </CardHeader>
       <CardContent className="p-0">
         <div className="border-t">

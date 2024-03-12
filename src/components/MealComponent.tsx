@@ -1,45 +1,18 @@
-import { DrinksSelection } from "@/components/DrinksSelection";
-import { Button } from "@/components/ui/button";
 import { useMealsStore } from "@/lib/store/mealsStore";
 import { MealWithAdditionalFields } from "@/lib/types";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-interface IMealProps {
+interface IMealComponentProps {
   meal: MealWithAdditionalFields;
+  children?: React.ReactNode;
 }
 
-export function MealComponent({ meal }: IMealProps) {
-  const [selectedDrinks, setSelectedDrinks] = useState<string[]>([]);
-  const [mealPrice, setMealPrice] = useState<number>(meal.price);
-  const [isSelectButtonActive, setIsSelectButtonActive] = useState(false);
-
-  const canSelectMeal = useMealsStore((state) => state.canSelectMeal);
-  const setCanSelectMeal = useMealsStore((state) => state.setCanSelectMeal);
-  const handleMealSelection = useMealsStore(
-    (state) => state.handleMealSelection
-  );
-
-  useEffect(() => {
-    setMealPrice(meal.price);
-    setSelectedDrinks([]);
-  }, [canSelectMeal, meal.price]);
-
-  const uniqueSelectedDrinks = [...new Set(selectedDrinks)];
-
-  const handleDrinkSelect = (
-    isActive: boolean,
-    drinkTitle: string,
-    price: number
-  ) => {
-    setMealPrice((prev) => (isActive ? prev + price : prev - price));
-
-    setSelectedDrinks((prev) =>
-      isActive
-        ? [...prev, drinkTitle]
-        : prev.filter((title) => title !== drinkTitle)
-    );
-  };
+export function MealComponent({ meal, children }: IMealComponentProps) {
+  const selectedMeals = useMealsStore((state) => state.selectedMeals);
+  const selectedDrinks = selectedMeals.find(
+    (item) => item.meal === meal
+  )?.drinks;
 
   const numberOfMeals =
     meal.starter && meal.desert ? 3 : meal.starter || meal.desert ? 2 : 1;
@@ -55,40 +28,22 @@ export function MealComponent({ meal }: IMealProps) {
         </p>
         <h2 className="text-xl font-semibold">{meal.title}</h2>
         <div className="text-sm">
-          <p>Starter: {meal.starter}</p>
-          <p>Desert: {meal.desert}</p>
-          <p>
-            Selected drink:{" "}
-            {uniqueSelectedDrinks.map((drink, idx) =>
-              idx !== uniqueSelectedDrinks.length - 1 ? (
-                <React.Fragment key={drink}>{drink}, </React.Fragment>
-              ) : (
-                <React.Fragment key={drink}>{drink}</React.Fragment>
-              )
-            )}
-          </p>
+          {meal.starter && <p>Starter: {meal.starter}</p>}
+          {meal.desert && <p>Desert: {meal.desert}</p>}
+          {selectedDrinks && selectedDrinks?.length > 0 && (
+            <p>
+              Selected drink:
+              {selectedDrinks?.map((drink, idx) =>
+                idx !== selectedDrinks.length - 1 ? (
+                  <React.Fragment key={drink}>{drink}, </React.Fragment>
+                ) : (
+                  <React.Fragment key={drink}>{drink}</React.Fragment>
+                )
+              )}
+            </p>
+          )}
         </div>
-        <div className="flex justify-between">
-          <DrinksSelection
-            drinks={meal.drinks}
-            handleDrinkSelection={handleDrinkSelect}
-          />
-          <div>
-            <p>{mealPrice.toFixed(2)} €</p>
-            <Button
-              variant={"outline"}
-              className="px-6 py-3 border-sky-700 text-sky-700"
-              disabled={!canSelectMeal}
-              onClick={() => {
-                handleMealSelection(meal.title, mealPrice);
-                setCanSelectMeal(false);
-                setIsSelectButtonActive(!isSelectButtonActive);
-              }}
-            >
-              Select
-            </Button>
-          </div>
-        </div>
+        {children}
       </div>
     </div>
   );

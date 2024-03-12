@@ -4,12 +4,10 @@ import { hash } from "bcrypt";
 const prisma = new PrismaClient();
 
 async function main() {
-  await deleteEverything();
+  // await deleteEverything();
 
   await populatingMeals();
   await populatingUsers();
-
-  // await deleteEverything();
 }
 
 async function deleteEverything() {

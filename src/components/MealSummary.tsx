@@ -1,18 +1,20 @@
-import { Button } from "@/components/ui/button";
+'use client';
+
+import { Button, buttonVariants } from "@/components/ui/button";
 import { useMealsStore } from "@/lib/store/mealsStore";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { useState } from "react";
 
 export function MealSummary() {
   const [numberOfGuests, setNumberOfGuests] = useState(1);
   const selectedMeals = useMealsStore((state) => state.selectedMeals);
   const totalPrice = useMealsStore((state) => state.totalPrice);
+  const removeMealFromIndex = useMealsStore(
+    (state) => state.removeMealFromIndex
+  );
 
-  const numOfSelectedMeals = Object.values(selectedMeals)
-    .map((value) => value.count)
-    .reduce((c1, c2) => {
-      return c1 + c2;
-    }, 0);
+  const numOfSelectedMeals = selectedMeals.length;
 
   return (
     <div className="w-full lg:w-96 bg-gray-100 p-4 rounded-md">
@@ -21,18 +23,29 @@ export function MealSummary() {
       </div>
       <div className="flex flex-col space-y-2 mb-4">
         {Array.from({ length: numberOfGuests }).map((_, idx) => (
-          <SelectMealButton
-            key={idx}
-            index={idx}
-            numOfSelectedMeals={numOfSelectedMeals}
-          />
+          <div key={idx} className="flex justify-end gap-2">
+            <SelectMealButton
+              index={idx}
+              numOfSelectedMeals={numOfSelectedMeals}
+            />
+            {idx < numOfSelectedMeals && (
+              <Button
+                className="w-12"
+                disabled={numberOfGuests < 2}
+                onClick={() => {
+                  removeMealFromIndex(idx);
+                  setNumberOfGuests((prev) => prev - 1);
+                }}
+              >
+                <span className="text-xl">-</span>
+              </Button>
+            )}
+          </div>
         ))}
-        <div className="flex justify-end gap-2 my-4">
+        <div className="mt-12">
           <Button
-            className="w-12"
-            disabled={
-              numberOfGuests >= 4 || numberOfGuests !== numOfSelectedMeals
-            }
+            className="w-full"
+            disabled={numberOfGuests >= 4}
             onClick={() => setNumberOfGuests((prev) => prev + 1)}
           >
             <span className="text-xl">+</span>
@@ -42,17 +55,33 @@ export function MealSummary() {
       {totalPrice > 0 && (
         <div className="flex flex-col mt-4">
           <p className="text-sm">Total for:</p>
-          {Object.entries(selectedMeals).map(([key, value]) => (
-            <div key={key}>
-              <p>
-                {key}
-                {value.count > 1 && ` (x${value.count})`}: &nbsp;
-                {value.totalPrice.toFixed(2) + " €"}
-              </p>
-            </div>
-          ))}
+          {selectedMeals.map((meal, idx) => {
+            const currentMeal = meal.meal;
+            return (
+              <div key={currentMeal.title + idx}>
+                <p>
+                  {currentMeal.title}
+                  {meal.drinks.length > 0
+                    ? ` (${meal.drinks.join(", ")}): `
+                    : ": "}
+                  {meal.fullPrice.toFixed(2) + " €"}
+                </p>
+              </div>
+            );
+          })}
           <span className="text-lg font-bold">{totalPrice.toFixed(2)} €</span>
         </div>
+      )}
+      {!!numOfSelectedMeals && (
+        <Link
+          href={"/summary"}
+          className={cn(
+            buttonVariants({ variant: "secondary" }),
+            "m-auto block mt-4"
+          )}
+        >
+          <span className="text-xl">Go to summary</span>
+        </Link>
       )}
     </div>
   );
@@ -71,18 +100,19 @@ export function SelectMealButton({
 
   const canSelectMeal = useMealsStore((state) => state.canSelectMeal);
   const setCanSelectMeal = useMealsStore((state) => state.setCanSelectMeal);
+  const selectedMeals = useMealsStore((state) => state.selectedMeals);
 
-  const isSelectingMeal = hasSelectionBegan && canSelectMeal && numOfSelectedMeals === index;
+  const isSelectingMeal =
+    hasSelectionBegan && canSelectMeal && numOfSelectedMeals === index;
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center w-full">
       <p className="text-sm">Adult {index + 1}</p>
       <Button
         variant="outline"
-        disabled={hasSelectionBegan}
+        disabled={numOfSelectedMeals > index}
         className={cn({
-          "bg-amber-500/50 hover:bg-amber-500/30":
-            isSelectingMeal,
+          "bg-amber-500/50 hover:bg-amber-500/30": isSelectingMeal,
         })}
         onClick={() => {
           setHasSelectionBegan(!hasSelectionBegan);
@@ -92,7 +122,7 @@ export function SelectMealButton({
         {isSelectingMeal
           ? "Selecting meal..."
           : numOfSelectedMeals > index
-          ? "Selected"
+          ? selectedMeals[index]?.meal.title
           : "Select"}
       </Button>
     </div>

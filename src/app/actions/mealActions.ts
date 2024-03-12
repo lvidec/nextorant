@@ -69,16 +69,7 @@ export const updateMealAction = async (formData: FormData, mealId: string) => {
 };
 
 export const deleteMealAction = async (formData: FormData, mealId: string) => {
-  await prisma.mealLabel.deleteMany({
-    where: {
-      mealId,
-    },
-  });
-  await prisma.drinkMeal.deleteMany({
-    where: {
-      mealId,
-    },
-  });
+  await deleteAllConnectedLabelsAndDrinks(mealId);
 
   await prisma.meal.delete({
     where: {
@@ -158,5 +149,47 @@ const getDrinkDataForConnecting = async (
         },
       },
     };
+  });
+};
+
+const deleteAllConnectedLabelsAndDrinks = async (mealId: string) => {
+  await prisma.mealLabel.deleteMany({
+    where: {
+      mealId,
+    },
+  });
+  const labelsToDelete = await prisma.label.findMany({
+    where: {
+      meals: {
+        none: {},
+      },
+    },
+  });
+  await prisma.label.deleteMany({
+    where: {
+      id: {
+        in: labelsToDelete.map((label) => label.id),
+      },
+    },
+  });
+
+  await prisma.drinkMeal.deleteMany({
+    where: {
+      mealId,
+    },
+  });
+  const drinksToDelete = await prisma.drink.findMany({
+    where: {
+      meals: {
+        none: {},
+      },
+    },
+  });
+  await prisma.drink.deleteMany({
+    where: {
+      id: {
+        in: drinksToDelete.map((drink) => drink.id),
+      },
+    },
   });
 };

@@ -1,5 +1,3 @@
-"use client";
-
 import { Label } from "@/prisma/generated/client";
 import { HorizontalLine } from "@/components/HorizontalLine";
 import { LabelSelection } from "@/components/LabelSelection";
@@ -17,7 +15,7 @@ export function MealSelectionView({ meals, labels }: MealSelectionViewProps) {
     <div className="flex w-full">
       <div className="mx-8 my-4 w-full basis-3/5">
         <LabelSelection labels={labels} />
-        <HorizontalLine />
+        <HorizontalLine className="mx-4" />
         <MealSelection meals={meals} />
       </div>
       <MealSummary />
