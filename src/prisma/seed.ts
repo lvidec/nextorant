@@ -182,7 +182,48 @@ async function populatingMeals() {
           {
             label: {
               connectOrCreate: {
-                where: { id: "Dinner" },
+                where: { name: "Dinner" },
+                create: {
+                  name: "Dinner",
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+  });
+  await prisma.meal.upsert({
+    where: {
+      title: "Berlin famous kebab",
+    },
+    update: {},
+    create: {
+      title: "Berlin famous kebab",
+      img: "https://images.unsplash.com/photo-1699728088614-7d1d4277414b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: 5,
+      drinks: {
+        create: [
+          {
+            drink: {
+              connectOrCreate: {
+                where: { title: "Ice cold beer" },
+                create: {
+                  price: 3.5,
+                  title: "Ice cold beer",
+                  img: "https://images.unsplash.com/photo-1618183479302-1e0aa382c36b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                },
+              },
+            },
+          },
+        ],
+      },
+      labels: {
+        create: [
+          {
+            label: {
+              connectOrCreate: {
+                where: { name: "Dinner" },
                 create: {
                   name: "Dinner",
                 },
