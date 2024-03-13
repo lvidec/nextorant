@@ -12,10 +12,10 @@ interface MealSelectionViewProps {
 
 export function MealSelectionView({ meals, labels }: MealSelectionViewProps) {
   return (
-    <div className="flex w-full">
-      <div className="mx-8 my-4 w-full basis-3/5">
+    <div className="mt-4 flex flex-col lg:flex-row lg:justify-center w-full">
+      <div className="my-4 w-full lg:basis-3/5 mr-4">
         <LabelSelection labels={labels} />
-        <HorizontalLine className="mx-4" />
+        <HorizontalLine />
         <MealSelection meals={meals} />
       </div>
       <MealSummary />

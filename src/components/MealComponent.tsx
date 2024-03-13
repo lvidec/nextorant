@@ -20,9 +20,17 @@ export function MealComponent({ meal, children }: IMealComponentProps) {
   const hasDrinks = meal.drinks.length > 0;
 
   return (
-    <div className="flex">
-      <Image alt={meal.title} src={meal.img} width={200} height={200} />
-      <div className="ml-6 flex flex-col gap-2 w-full">
+    <div className="flex flex-col sm:flex-row">
+      <div className="flex flex-col self-center justify-center">
+        <Image
+          alt={meal.title}
+          src={meal.img}
+          width={200}
+          height={200}
+          className="w-32 h-32 lg:w-full lg:h-full"
+        />
+      </div>
+      <div className="sm:ml-6 flex flex-col gap-1 lg:gap-2 w-full">
         <p className="text-sm">
           {numberOfMeals} course meal {hasDrinks && "+ drink"}
         </p>

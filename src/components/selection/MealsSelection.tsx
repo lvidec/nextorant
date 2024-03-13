@@ -21,7 +21,7 @@ export function MealSelection({ meals }: IMealSelectionProps) {
       );
 
   return (
-    <div className="mx-4">
+    <div>
       {filteredMeals.map((meal) => (
         <React.Fragment key={meal.id}>
           <MealComponent meal={meal}>
