@@ -13,7 +13,7 @@ interface IMealSelectionProps {
   meals: MealWithAdditionalFields[];
 }
 
-export const DEFAULT_PER_PAGE = 2;
+export const DEFAULT_PER_PAGE = 3;
 
 export function MealSelection({ meals }: IMealSelectionProps) {
   const searchParams = useSearchParams();
