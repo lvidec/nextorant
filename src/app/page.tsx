@@ -19,7 +19,6 @@ export default async function Home() {
 
   return (
     <main>
-      <div className="p-10">
         <h1>This is a public route</h1>
         {session ? (
           <div className="flex flex-col gap-2 text-2xl font-semibold">
@@ -45,8 +44,7 @@ export default async function Home() {
             <SignInButton />
           </div>
         )}
-      </div>
-      <MealSelectionView meals={meals} labels={labels} />
+        <MealSelectionView meals={meals} labels={labels} />
     </main>
   );
 }

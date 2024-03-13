@@ -11,10 +11,7 @@ interface ILabelSelectProps {
   setFalsyOtherLabels: (labelId: string) => void;
 }
 
-export function LabelSelect({
-  label,
-  setFalsyOtherLabels,
-}: ILabelSelectProps) {
+export function LabelSelect({ label, setFalsyOtherLabels }: ILabelSelectProps) {
   const [isActive, setIsActive] = useState(false);
 
   const handleLabelSelection = useLabelsStore(

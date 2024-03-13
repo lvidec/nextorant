@@ -26,3 +26,6 @@ export const getErrorMessage = (error: unknown): string => {
 
   return message;
 };
+
+export const generatePageHref = (page: number, perPage: number) =>
+  `?page=${page}&per_page=${perPage}`;
