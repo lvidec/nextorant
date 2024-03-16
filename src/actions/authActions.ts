@@ -5,6 +5,7 @@ import { User } from "@/prisma/generated/client";
 import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 import { signUpSchema } from "@/lib/zodSchemas";
+import { findUserByEmail } from "@/lib/prisma/prismaService";
 
 interface SignUpFormState {
   errors: {
@@ -67,14 +68,6 @@ export async function signUp(
 
   redirect("/");
 }
-
-export const findUserByEmail = async (email: string) => {
-  return await prisma.user.findFirst({
-    where: {
-      email,
-    },
-  });
-};
 
 const generatePasswordHash = async (password: string) => {
   const salt = await bcrypt.genSalt(10);

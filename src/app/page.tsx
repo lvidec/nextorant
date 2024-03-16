@@ -5,11 +5,11 @@ import { SignOutButton } from "@/components/auth/SignOutButton";
 
 import { MealSelectionView } from "@/components/MealSelectionView";
 import { buttonVariants } from "@/components/ui/button";
-import { authOptions } from "@/lib/auth/authOptions";
+import { authOptions } from "@/lib/authOptions";
 import {
   getAllLabels,
   getMealsWithEverything,
-} from "@/lib/prisma/prismaActions";
+} from "@/lib/prisma/prismaService";
 import Link from "next/link";
 
 export default async function Home() {

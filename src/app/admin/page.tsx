@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { getMealsWithEverything } from "@/lib/prisma/prismaActions";
+import { getMealsWithEverything } from "@/lib/prisma/prismaService";
 import Link from "next/link";
 
 export default async function MealAdmin() {

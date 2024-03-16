@@ -32,3 +32,11 @@ export const getDrinkById = async (drinkId: string): Promise<Drink | null> => {
     },
   });
 };
+
+export const findUserByEmail = async (email: string) => {
+  return await prisma.user.findFirst({
+    where: {
+      email,
+    },
+  });
+};
