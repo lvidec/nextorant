@@ -46,7 +46,17 @@ export function FormButton({ actionType, meal }: FormButtonProps) {
           })
         }
         formAction={async (formData) => {
-          await deleteMealAction(formData, meal.id);
+          const response = await deleteMealAction(formData, 'meal.id');
+          if (response?.error) {
+            toast({
+              title: response?.error,
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: `Meal is successfully deleted.`,
+            });
+          }
         }}
       >
         <MdOutlineDeleteForever className="w-8 h-8" />
