@@ -33,17 +33,17 @@ export const useMealsStore = create<MealsStore>((set) => ({
     set(() => ({ canSelectMeal: canSelect }));
   },
   handleMealSelection: (meal, mealPrice, mealDrinks) => {
-    set((state) => {
-      state.totalPrice += mealPrice;
-
-      state.selectedMeals.push({
-        meal: meal,
-        fullPrice: mealPrice,
-        drinks: mealDrinks,
-      });
-
-      return state;
-    });
+    set((state) => ({
+      totalPrice: state.totalPrice + mealPrice,
+      selectedMeals: [
+        ...state.selectedMeals,
+        {
+          meal: meal,
+          fullPrice: mealPrice,
+          drinks: mealDrinks,
+        },
+      ],
+    }));
   },
   removeMealFromIndex: (index) => {
     set((state) => ({
