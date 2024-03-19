@@ -40,7 +40,7 @@ export function MealComponent({ meal, children }: IMealComponentProps) {
           {meal.desert && <p>Desert: {meal.desert}</p>}
           {selectedDrinks && selectedDrinks?.length > 0 && (
             <p>
-              Selected drink:
+              Selected drink:&nbsp;
               {selectedDrinks?.map((drink, idx) =>
                 idx !== selectedDrinks.length - 1 ? (
                   <React.Fragment key={drink}>{drink}, </React.Fragment>
