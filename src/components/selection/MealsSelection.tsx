@@ -7,7 +7,7 @@ import { useLabelsStore } from "@/lib/store/labelsStore";
 import { MealWithAdditionalFields } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 import React from "react";
-import { PaginationSelect } from "@/components/PaginationSelect";
+import { PaginationSelect } from "@/components/selection/PaginationSelect";
 
 interface IMealSelectionProps {
   meals: MealWithAdditionalFields[];
