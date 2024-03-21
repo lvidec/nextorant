@@ -2,11 +2,11 @@
 
 import { LabelSelect } from "@/components/selection/LabelSelect";
 import { LabelWithIsActive } from "@/lib/types";
-import { Label } from "@/prisma/generated/client";
+import { RestorantLabel } from "@/prisma/generated/client";
 import { useState } from "react";
 
 interface ILabelSelectionProps {
-  labels: Label[];
+  labels: RestorantLabel[];
 }
 
 const labelAll: LabelWithIsActive = { id: "", name: "All", isActive: true };

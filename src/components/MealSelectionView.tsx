@@ -3,11 +3,11 @@ import { MealSummary } from "@/components/MealSummary";
 import { LabelSelection } from "@/components/selection/LabelSelection";
 import { MealSelection } from "@/components/selection/MealsSelection";
 import { MealWithAdditionalFields } from "@/lib/types";
-import { Label } from "@/prisma/generated/client";
+import { RestorantLabel } from "@/prisma/generated/client";
 
 interface MealSelectionViewProps {
   meals: MealWithAdditionalFields[];
-  labels: Label[];
+  labels: RestorantLabel[];
 }
 
 export function MealSelectionView({ meals, labels }: MealSelectionViewProps) {

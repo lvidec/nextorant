@@ -1,13 +1,13 @@
-import { Drink, Label, Meal } from "@/prisma/generated/client";
+import { RestorantDrink, RestorantLabel, RestorantMeal } from "@/prisma/generated/client";
 
-export type MealWithAdditionalFields = Meal & { drinks: MealDrinks } & {
+export type MealWithAdditionalFields = RestorantMeal & { drinks: MealDrinks } & {
   labels: MealLabels;
 };
 
-export type MealDrinks = { drink: Drink }[];
-export type MealLabels = { label: Label }[];
+export type MealDrinks = { drink: RestorantDrink }[];
+export type MealLabels = { label: RestorantLabel }[];
 
-export type LabelWithIsActive = Label & { isActive: boolean };
+export type LabelWithIsActive = RestorantLabel & { isActive: boolean };
 
 export type LabelDataTypeWhenConnecting = {
   label: {

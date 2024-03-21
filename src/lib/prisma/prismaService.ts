@@ -1,11 +1,11 @@
 import { prisma } from "@/lib/prisma/prisma";
 import { MealWithAdditionalFields } from "@/lib/types";
-import { Drink, Label } from "@/prisma/generated/client";
+import { RestorantDrink, RestorantLabel } from "@/prisma/generated/client";
 
 export const getMealsWithEverything = async (): Promise<
   MealWithAdditionalFields[]
 > => {
-  return await prisma.meal.findMany({
+  return await prisma.restorantMeal.findMany({
     include: {
       drinks: {
         select: {
@@ -21,12 +21,12 @@ export const getMealsWithEverything = async (): Promise<
   });
 };
 
-export const getAllLabels = async (): Promise<Label[]> => {
-  return await prisma.label.findMany();
+export const getAllLabels = async (): Promise<RestorantLabel[]> => {
+  return await prisma.restorantLabel.findMany();
 };
 
-export const getDrinkById = async (drinkId: string): Promise<Drink | null> => {
-  return prisma.drink.findFirst({
+export const getDrinkById = async (drinkId: string): Promise<RestorantDrink | null> => {
+  return prisma.restorantDrink.findFirst({
     where: {
       id: drinkId,
     },
@@ -34,7 +34,7 @@ export const getDrinkById = async (drinkId: string): Promise<Drink | null> => {
 };
 
 export const findUserByEmail = async (email: string) => {
-  return await prisma.user.findFirst({
+  return await prisma.restorantUser.findFirst({
     where: {
       email,
     },

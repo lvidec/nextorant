@@ -18,7 +18,7 @@ export const createMealAction = async (formData: FormData) => {
     const [validatedFormData, validatedLabelData, validatedDrinkData] =
       await getValidatedFormData(formData);
 
-    await prisma.meal.create({
+    await prisma.restorantMeal.create({
       data: {
         title: validatedFormData.title,
         starter: validatedFormData.starter,
@@ -45,7 +45,7 @@ export const updateMealAction = async (formData: FormData, mealId: string) => {
     const labelData = getLabelDataForConnecting(formData);
     const drinksToAdd = await getDrinkDataForConnecting(formData, mealId);
 
-    const existingLabelsFromMeal = await prisma.label.findMany({
+    const existingLabelsFromMeal = await prisma.restorantLabel.findMany({
       where: {
         meals: {
           some: {
@@ -60,7 +60,7 @@ export const updateMealAction = async (formData: FormData, mealId: string) => {
     const [validatedFormData, validatedLabelData, validatedDrinkData] =
       await getValidatedFormData(formData, labelsToAdd);
 
-    await prisma.meal.update({
+    await prisma.restorantMeal.update({
       where: {
         id: mealId,
       },
@@ -89,7 +89,7 @@ export const deleteMealAction = async (formData: FormData, mealId: string) => {
   try {
     await deleteAllConnectedLabelsAndDrinks(mealId);
 
-    await prisma.meal.delete({
+    await prisma.restorantMeal.delete({
       where: {
         id: mealId,
       },
@@ -161,7 +161,7 @@ const getDrinkDataForConnecting = async (
   ).length;
 
   const existingDrinksFromMeal = mealId
-    ? await prisma.drink.findMany({
+    ? await prisma.restorantDrink.findMany({
         where: {
           meals: {
             some: {
@@ -195,19 +195,19 @@ const getDrinkDataForConnecting = async (
 };
 
 const deleteAllConnectedLabelsAndDrinks = async (mealId: string) => {
-  await prisma.mealLabel.deleteMany({
+  await prisma.restorantMealLabel.deleteMany({
     where: {
       mealId,
     },
   });
-  const labelsToDelete = await prisma.label.findMany({
+  const labelsToDelete = await prisma.restorantLabel.findMany({
     where: {
       meals: {
         none: {},
       },
     },
   });
-  await prisma.label.deleteMany({
+  await prisma.restorantLabel.deleteMany({
     where: {
       id: {
         in: labelsToDelete.map((label) => label.id),
@@ -215,19 +215,19 @@ const deleteAllConnectedLabelsAndDrinks = async (mealId: string) => {
     },
   });
 
-  await prisma.drinkMeal.deleteMany({
+  await prisma.restorantDrinkMeal.deleteMany({
     where: {
       mealId,
     },
   });
-  const drinksToDelete = await prisma.drink.findMany({
+  const drinksToDelete = await prisma.restorantDrink.findMany({
     where: {
       meals: {
         none: {},
       },
     },
   });
-  await prisma.drink.deleteMany({
+  await prisma.restorantDrink.deleteMany({
     where: {
       id: {
         in: drinksToDelete.map((drink) => drink.id),

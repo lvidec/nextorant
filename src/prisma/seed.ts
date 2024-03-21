@@ -11,12 +11,12 @@ async function main() {
 }
 
 async function deleteEverything() {
-  await prisma.drinkMeal.deleteMany();
-  await prisma.mealLabel.deleteMany();
-  await prisma.drink.deleteMany();
-  await prisma.label.deleteMany();
-  await prisma.meal.deleteMany();
-  await prisma.user.deleteMany();
+  await prisma.restorantDrinkMeal.deleteMany();
+  await prisma.restorantMealLabel.deleteMany();
+  await prisma.restorantDrink.deleteMany();
+  await prisma.restorantLabel.deleteMany();
+  await prisma.restorantMeal.deleteMany();
+  await prisma.restorantUser.deleteMany();
   console.log("Deleted everything successfully");
 }
 
@@ -24,7 +24,7 @@ async function populatingUsers() {
   console.log("Populating users...");
 
   const password = await hash("Duje", 12);
-  await prisma.user.upsert({
+  await prisma.restorantUser.upsert({
     where: { email: "duje@seed.com" },
     update: {},
     create: {
@@ -44,7 +44,7 @@ async function populatingUsers() {
 async function populatingMeals() {
   console.log("Populating meals...");
 
-  await prisma.meal.upsert({
+  await prisma.restorantMeal.upsert({
     where: {
       title: "Lima's favorite pizza",
     },
@@ -109,7 +109,7 @@ async function populatingMeals() {
       },
     },
   });
-  await prisma.meal.upsert({
+  await prisma.restorantMeal.upsert({
     where: {
       title: "Continental breakfast",
     },
@@ -151,7 +151,7 @@ async function populatingMeals() {
       },
     },
   });
-  await prisma.meal.upsert({
+  await prisma.restorantMeal.upsert({
     where: {
       title: "Dinner dinner chicken winner",
     },
@@ -193,7 +193,7 @@ async function populatingMeals() {
       },
     },
   });
-  await prisma.meal.upsert({
+  await prisma.restorantMeal.upsert({
     where: {
       title: "Berlin famous kebab",
     },
@@ -201,6 +201,7 @@ async function populatingMeals() {
     create: {
       title: "Berlin famous kebab",
       img: "https://images.unsplash.com/photo-1699728088614-7d1d4277414b?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      starter: "After rave special refresher (6am+ only)",
       price: 5,
       drinks: {
         create: [

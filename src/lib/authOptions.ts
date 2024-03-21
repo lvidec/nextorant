@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma/prisma";
-import { User } from "@/prisma/generated/client";
+import { RestorantUser } from "@/prisma/generated/client";
 import { compare } from "bcrypt";
 import { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -24,7 +24,7 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const user = await prisma.user.findUnique({
+        const user = await prisma.restorantUser.findUnique({
           where: {
             email: credentials.email,
           },
@@ -63,7 +63,7 @@ export const authOptions: NextAuthOptions = {
     },
     jwt: ({ token, user }) => {
       if (user) {
-        const u = user as unknown as User;
+        const u = user as unknown as RestorantUser;
         return {
           ...token,
           id: u.id,

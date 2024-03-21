@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MealDrinks } from "@/lib/types";
-import { Drink } from "@/prisma/generated/client";
+import { RestorantDrink } from "@/prisma/generated/client";
 import { useState } from "react";
 import { OperateNumOfFieldsButton } from "@/app/admin/_form/OperateNumOfFieldsButton";
 
@@ -40,7 +40,7 @@ export const DrinksFields = ({ drinks }: DrinksFieldsProps) => {
   );
 };
 
-const DrinkInputs = ({ idx, drink }: { idx: number; drink?: Drink }) => {
+const DrinkInputs = ({ idx, drink }: { idx: number; drink?: RestorantDrink }) => {
   return (
     <div key={idx} className="flex gap-4 mb-2">
       <Input

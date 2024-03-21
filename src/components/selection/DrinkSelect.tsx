@@ -3,12 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { useMealsStore } from "@/lib/store/mealsStore";
 import { cn } from "@/lib/utils";
-import { Drink } from "@/prisma/generated/client";
+import { RestorantDrink } from "@/prisma/generated/client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface IDrinkSelectProps {
-  drink: Drink;
+  drink: RestorantDrink;
   handleDrinkSelection: (
     isActive: boolean,
     drinkTitle: string,

@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma/prisma";
-import { User } from "@/prisma/generated/client";
+import { RestorantUser } from "@/prisma/generated/client";
 import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 import { signUpSchema } from "@/lib/zodSchemas";
@@ -42,9 +42,9 @@ export async function signUp(
 
   const hashed = await generatePasswordHash(result.data.password);
 
-  let user: User;
+  let user: RestorantUser;
   try {
-    user = await prisma.user.create({
+    user = await prisma.restorantUser.create({
       data: {
         email: result.data.email,
         password: hashed,

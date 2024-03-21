@@ -9,55 +9,55 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model User {
+model RestorantUser {
   id       String @id @default(cuid())
   email    String @unique
   password String
-  meals    Meal[]
+  meals    RestorantMeal[]
 }
 
-model Label {
+model RestorantLabel {
   id    String      @id @default(cuid())
   name  String      @unique
-  meals MealLabel[]
+  meals RestorantMealLabel[]
 }
 
-model Meal {
+model RestorantMeal {
   id      String      @id @default(cuid())
   title   String      @unique
   starter String?
   desert  String?
   price   Float
   img     String
-  labels  MealLabel[]
-  drinks  DrinkMeal[]
-  users   User[]
+  labels  RestorantMealLabel[]
+  drinks  RestorantDrinkMeal[]
+  users   RestorantUser[]
 }
 
-model Drink {
+model RestorantDrink {
   id    String @id @default(cuid())
   title String @unique
   price Float
   img   String
-  meals DrinkMeal[]
+  meals RestorantDrinkMeal[]
 }
 
-model MealLabel {
+model RestorantMealLabel {
   labelId String
-  label   Label  @relation(fields: [labelId], references: [id])
+  label   RestorantLabel  @relation(fields: [labelId], references: [id])
 
   mealId String
-  meal   Meal   @relation(fields: [mealId], references: [id])
+  meal   RestorantMeal   @relation(fields: [mealId], references: [id])
 
   @@id([labelId, mealId])
 }
 
-model DrinkMeal {
+model RestorantDrinkMeal {
   drinkId String
-  drink   Drink  @relation(fields: [drinkId], references: [id])
+  drink   RestorantDrink  @relation(fields: [drinkId], references: [id])
 
   mealId String
-  meal   Meal   @relation(fields: [mealId], references: [id])
+  meal   RestorantMeal   @relation(fields: [mealId], references: [id])
 
   @@id([drinkId, mealId])
 }
