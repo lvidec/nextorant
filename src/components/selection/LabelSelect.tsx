@@ -41,6 +41,7 @@ export function LabelSelect({ label, setFalsyOtherLabels }: ILabelSelectProps) {
 
   return (
     <Badge
+      id="label-badge"
       variant={"outline"}
       className={cn("py-3 px-5", { "border-2 border-sky-700": label.isActive })}
       onClick={() => {
