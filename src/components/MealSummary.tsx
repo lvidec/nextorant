@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useMealsStore } from "@/lib/store/mealsStore";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";
+import { sendGAEvent, sendGTMEvent } from "@next/third-parties/google";
 
 export function MealSummary() {
   const [numberOfGuests, setNumberOfGuests] = useState(1);
@@ -73,15 +74,37 @@ export function MealSummary() {
         </div>
       )}
       {!!numOfSelectedMeals && (
-        <Link
-          href={"/summary"}
-          className={cn(
-            buttonVariants({ variant: "secondary" }),
-            "m-auto block mt-4"
-          )}
-        >
-          <span className="text-xl">Go to summary</span>
-        </Link>
+        <>
+          <Button
+            onClick={() => {
+              sendGAEvent({
+                event: "GM Send this button to the sky",
+                value: selectedMeals.map((meal) => meal.meal.title),
+              })
+              sendGTMEvent({
+                event: "GTM Send this button to the sky",
+                value: selectedMeals.map((meal) => meal.meal.title),
+              });
+            }}
+          >
+            send this button to the sky
+          </Button>
+          <Link
+            href={"/summary"}
+            className={cn(
+              buttonVariants({ variant: "secondary" }),
+              "m-auto block mt-4"
+            )}
+            onClick={() => {
+              sendGTMEvent({
+                event: "Go to summary GTM event",
+                value: selectedMeals.map((meal) => meal.meal.title),
+              });
+            }}
+          >
+            <span className="text-xl">Go to summary</span>
+          </Link>
+        </>
       )}
     </div>
   );
