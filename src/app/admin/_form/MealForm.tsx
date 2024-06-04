@@ -10,8 +10,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useMealsStore } from "@/lib/store/mealsStore";
 import { DrinksFields } from "@/app/admin/_form/DrinksFields";
 import { LabelsFields } from "@/app/admin/_form/LabelsFields";
+import CloudflareWidget from "@/components/auth/CloudFlareWidget";
+import { CloudflareWidgetStatus } from "@/lib/types";
 
 export function MealForm() {
+  const [cloudflareStatus, setCloudflareStatus] =
+    useState<CloudflareWidgetStatus>(null);
   const [isNewMeal, setIsNewMeal] = useState(false);
 
   const selectedMealInForm = useMealsStore((state) => state.selectedMealInForm);
@@ -19,15 +23,20 @@ export function MealForm() {
     (state) => state.setSelectedMealInForm
   );
 
+  const handleStatusUpdate = (status: CloudflareWidgetStatus) => {
+    setCloudflareStatus(status);
+  };
+
   const handleClickingNewMeal = () => {
     setIsNewMeal(!isNewMeal);
   };
 
   return (
     <div>
+      <CloudflareWidget handleStatusUpdate={handleStatusUpdate} />
       <div className="flex justify-end p-4">
         {!isNewMeal && !selectedMealInForm && (
-          <Button size="sm" onClick={() => setIsNewMeal(!isNewMeal)}>
+          <Button size="sm" disabled={cloudflareStatus !== 'solved'} onClick={() => setIsNewMeal(!isNewMeal)}>
             Add meal
           </Button>
         )}

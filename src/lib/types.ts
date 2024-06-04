@@ -35,3 +35,5 @@ export type DrinkDataTypeWhenConnecting = {
     };
   };
 };
+
+export type CloudflareWidgetStatus = 'solved' | 'error' | 'expired' | null;

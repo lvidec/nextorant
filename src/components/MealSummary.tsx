@@ -74,37 +74,15 @@ export function MealSummary() {
         </div>
       )}
       {!!numOfSelectedMeals && (
-        <>
-          <Button
-            onClick={() => {
-              sendGAEvent({
-                event: "GM Send this button to the sky",
-                value: selectedMeals.map((meal) => meal.meal.title),
-              })
-              sendGTMEvent({
-                event: "GTM Send this button to the sky",
-                value: selectedMeals.map((meal) => meal.meal.title),
-              });
-            }}
-          >
-            send this button to the sky
-          </Button>
-          <Link
-            href={"/summary"}
-            className={cn(
-              buttonVariants({ variant: "secondary" }),
-              "m-auto block mt-4"
-            )}
-            onClick={() => {
-              sendGTMEvent({
-                event: "Go to summary GTM event",
-                value: selectedMeals.map((meal) => meal.meal.title),
-              });
-            }}
-          >
-            <span className="text-xl">Go to summary</span>
-          </Link>
-        </>
+        <Link
+          href={"/summary"}
+          className={cn(
+            buttonVariants({ variant: "secondary" }),
+            "m-auto block mt-4"
+          )}
+        >
+          <span className="text-xl">Go to summary</span>
+        </Link>
       )}
     </div>
   );
