@@ -33,10 +33,18 @@ export function MealForm() {
 
   return (
     <div>
-      <CloudflareWidget handleStatusUpdate={handleStatusUpdate} />
+      <CloudflareWidget
+        id="test-widget"
+        handleStatusUpdate={handleStatusUpdate}
+        className="m-auto my-4"
+      />
       <div className="flex justify-end p-4">
         {!isNewMeal && !selectedMealInForm && (
-          <Button size="sm" disabled={cloudflareStatus !== 'solved'} onClick={() => setIsNewMeal(!isNewMeal)}>
+          <Button
+            size="sm"
+            disabled={cloudflareStatus !== "solved"}
+            onClick={() => setIsNewMeal(!isNewMeal)}
+          >
             Add meal
           </Button>
         )}

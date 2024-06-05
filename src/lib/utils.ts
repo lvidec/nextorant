@@ -29,3 +29,14 @@ export const getErrorMessage = (error: unknown): string => {
 
 export const generatePageHref = (page: number, perPage: number) =>
   `?page=${page}&per_page=${perPage}`;
+
+// export function encodeImage(image: string) {
+//   return new Promise((resolve, _) => {
+//     const reader = new FileReader();
+//     reader.onload = (e) => {
+//       const imageData = e.target?.result;
+//       console.log("imageData: ", imageData);
+//     };
+//     reader.readAsDataURL(image);
+//   });
+// }

@@ -3,21 +3,30 @@
 import { CloudflareWidgetStatus } from "@/lib/types";
 import { Turnstile } from "@marsidev/react-turnstile";
 
-interface CloudFlareWidgetProps {
-  handleStatusUpdate: (status: CloudflareWidgetStatus) => void;
+interface CloudFlareWidgetProps extends React.HTMLAttributes<HTMLDivElement> {
+  id?: string;
+  handleStatusUpdate?: (status: CloudflareWidgetStatus) => void;
 }
 
+const SITE_KEY =
+  process.env.NODE_ENV === "development"
+    ? "1x00000000000000000000AA"
+    : process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!;
+
 export default function CloudflareWidget({
+  id,
   handleStatusUpdate,
+  className,
 }: CloudFlareWidgetProps) {
   return (
     <Turnstile
-      siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!}
+      id={id}
+      siteKey={SITE_KEY}
       options={{ theme: "light" }}
-      onError={() => handleStatusUpdate("error")}
-      onExpire={() => handleStatusUpdate("expired")}
-      onSuccess={() => handleStatusUpdate("solved")}
-      className="m-auto my-4"
+      onError={() => handleStatusUpdate && handleStatusUpdate("error")}
+      onExpire={() => handleStatusUpdate && handleStatusUpdate("expired")}
+      onSuccess={() => handleStatusUpdate && handleStatusUpdate("solved")}
+      className={className}
     />
   );
 }
